@@ -9,18 +9,17 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct EnumSyntax: SyntaxRepresentable {
+public struct EnumSyntax: SwifiterSyntax {
     public var syntax: EnumDeclSyntax
     public var name: String
-    
     public var cases: [EnumCaseSyntax] {
         content
-            .filter(for: EnumCaseDeclSyntax.self)
-            .initialise
+            .search(for: \.enumCaseSyntax)
+            .construct()
     }
     
-    init(_ enumDeclSyntax: EnumDeclSyntax) {
-        self.syntax = enumDeclSyntax
+    public init(_ syntax: EnumDeclSyntax) {
+        self.syntax = syntax
         self.name = syntax.name.text
     }
 }

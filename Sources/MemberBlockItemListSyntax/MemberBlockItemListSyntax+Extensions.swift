@@ -8,7 +8,7 @@
 import SwiftSyntax
 
 public extension MemberBlockItemListSyntax {
-    func filter<S: SyntaxProtocol>(for syntaxType: S.Type) -> [S] {
+    func search<S: DeclSyntaxProtocol>(for swiftierSyntaxType: KeyPath<SwiftierSyntaxType, S.Type>) -> [S] {
         self.compactMap { member in
             member.decl.as(S.self)
         }

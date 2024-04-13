@@ -11,7 +11,7 @@ public struct EnumCaseSyntax {
     public var syntax: EnumCaseDeclSyntax
     public var name: String
     
-    init?(syntax: EnumCaseDeclSyntax) throws {
+    public init?(_ syntax: EnumCaseDeclSyntax) {
         guard let name = syntax.elements.first?.name.text
         else { return nil }
         

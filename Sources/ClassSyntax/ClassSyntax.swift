@@ -6,24 +6,19 @@
 //
 
 import SwiftSyntax
-import SwiftSyntaxBuilder
-import SwiftSyntaxMacros
 
-public struct ClassSyntax: SyntaxRepresentable {
+public struct ClassSyntax: SwifiterSyntax {    
     public var syntax: ClassDeclSyntax
-    
     public var identifier: String {
         syntax.name.text
     }
-    
     public var enums: [EnumSyntax] {
         content
-            .filter(for: EnumDeclSyntax.self)
-            .initialise
+            .search(for: \.enumSyntax)
+            .construct()
     }
     
-    
-    init(_ classDeclSyntax: ClassDeclSyntax) {
-        self.syntax = classDeclSyntax
+    public init(_ syntax: ClassDeclSyntax) {
+        self.syntax = syntax
     }
 }
