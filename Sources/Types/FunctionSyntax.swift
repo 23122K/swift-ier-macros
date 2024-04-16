@@ -32,19 +32,19 @@ extension FunctionDeclSyntax {
     }
 }
 
-extension FunctionParameterSyntax {
-    var swiftierLabel: String? {
+public extension FunctionParameterSyntax {
+    public var swiftierLabel: String? {
         guard let label = self.secondName?.text
         else { return nil }
         
         return label
     }
     
-    var swiftierName: String {
+    public var swiftierName: String {
         return self.firstName.text
     }
     
-    var swifiterType: String {
+    public var swifiterType: String {
         return self.swiftierName
     }
 }
