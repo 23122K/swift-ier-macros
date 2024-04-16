@@ -44,13 +44,33 @@ public extension FunctionParameterSyntax {
         return self.firstName.text
     }
     
-    public var swifiterType: String {
-        return self.type.as(OptionalTypeSyntax.self)?.swifiterType ?? "Unknown type"
+    var swiftierType: String? {
+        let swiftierTypeSyntax = Swiftier(syntax: self.type.as(OptionalTypeSyntax.self)!)
+        return swiftierTypeSyntax.type
     }
 }
 
-extension OptionalTypeSyntax {
-    var swifiterType: String? {
-        self.wrappedType.as(IdentifierTypeSyntax.self)?.name.text
+@frozen public struct Swiftier<Syntax> {
+    typealias Syntax = Syntax
+    
+    internal let syntax: Syntax
+    
+    public init(syntax: Syntax) {
+        self.syntax = syntax
     }
 }
+
+extension Swiftier where Swiftier.Syntax == OptionalTypeSyntax {
+    var type: String? {
+        guard let type = syntax.wrappedType.as(IdentifierTypeSyntax.self)?.name.text else {
+            return nil
+        }
+        
+        return type
+    }
+}
+
+enum SwiftierError {
+    case funcShouldHaveAType
+}
+
