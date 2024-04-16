@@ -51,16 +51,16 @@ public extension FunctionParameterSyntax {
 }
 
 @frozen public struct Swiftier<Syntax> {
-    typealias Syntax = Syntax
+    public typealias Syntax = Syntax
     
-    internal let syntax: Syntax
+    public let syntax: Syntax
     
     public init(syntax: Syntax) {
         self.syntax = syntax
     }
 }
 
-extension Swiftier where Swiftier.Syntax == OptionalTypeSyntax {
+public extension Swiftier where Swiftier.Syntax == OptionalTypeSyntax {
     var type: String? {
         guard let type = syntax.wrappedType.as(IdentifierTypeSyntax.self)?.name.text else {
             return nil
