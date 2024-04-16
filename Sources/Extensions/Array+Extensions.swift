@@ -24,10 +24,3 @@ public extension Array where Array.Element == ClassDeclSyntax {
         self.compactMap { syntax in ClassSyntax(syntax) }
     }
 }
-
-public extension Array where Array.Element == FunctionDeclSyntax {
-    func construct() -> [FunctionSyntax] {
-        self.compactMap { syntax in FunctionSyntax(syntax) }
-    }
-}
-

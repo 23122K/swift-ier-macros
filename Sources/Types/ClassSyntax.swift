@@ -13,10 +13,9 @@ public struct ClassSyntax: SwiftierSyntax {
         syntax.name.text
     }
     
-    public var functions: [FunctionSyntax] {
+    public var functions: [FunctionDeclSyntax] {
         content
             .search(for: \.functionSyntax)
-            .construct()
     }
     
     
