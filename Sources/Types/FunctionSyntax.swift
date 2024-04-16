@@ -45,12 +45,12 @@ public extension FunctionParameterSyntax {
     }
     
     public var swifiterType: String {
-        return self.swiftierName
+        return self.type.as(OptionalTypeSyntax.self)?.swifiterType ?? "Unknown type"
     }
 }
 
 extension OptionalTypeSyntax {
-    var swifiterName: String? {
+    var swifiterType: String? {
         self.wrappedType.as(IdentifierTypeSyntax.self)?.name.text
     }
 }
