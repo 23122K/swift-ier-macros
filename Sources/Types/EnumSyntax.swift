@@ -9,7 +9,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct EnumSyntax: SwifiterSyntax {
+public struct EnumSyntax: SwiftierSyntax {
     public var syntax: EnumDeclSyntax
     public var name: String
     public var cases: [EnumCaseSyntax] {

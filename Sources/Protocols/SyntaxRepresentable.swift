@@ -7,7 +7,7 @@
 
 import SwiftSyntax
 
-public protocol SwifiterSyntax {
+public protocol SwiftierSyntax {
     associatedtype S: DeclGroupSyntax
     
     var syntax: S { get set }
@@ -15,7 +15,7 @@ public protocol SwifiterSyntax {
     init(_ synax: S)
 }
 
-extension SwifiterSyntax {
+extension SwiftierSyntax {
     internal var content: MemberBlockItemListSyntax {
         self.syntax.memberBlock.members
     }
@@ -25,9 +25,10 @@ public struct SwiftierSyntaxType {
     let classSyntax: ClassDeclSyntax.Type
     let enumSyntax: EnumDeclSyntax.Type
     let enumCaseSyntax: EnumCaseDeclSyntax.Type
+    let functionSyntax: FunctionDeclSyntax.Type
 }
 
-public extension SwifiterSyntax {
+public extension SwiftierSyntax {
     init?(_ syntax: DeclSyntax) {
         guard let syntax = syntax.as(S.self)
         else { return nil }

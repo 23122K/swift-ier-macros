@@ -19,9 +19,15 @@ public extension Array where Array.Element == EnumCaseDeclSyntax {
     }
 }
 
-public extension Array where Array.Element == ClassSyntax.S {
+public extension Array where Array.Element == ClassDeclSyntax {
     func construct() -> [ClassSyntax] {
         self.compactMap { syntax in ClassSyntax(syntax) }
+    }
+}
+
+public extension Array where Array.Element == FunctionDeclSyntax {
+    func construct() -> [FunctionSyntax] {
+        self.compactMap { syntax in FunctionSyntax(syntax) }
     }
 }
 

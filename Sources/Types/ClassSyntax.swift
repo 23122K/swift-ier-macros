@@ -7,11 +7,19 @@
 
 import SwiftSyntax
 
-public struct ClassSyntax: SwifiterSyntax {    
+public struct ClassSyntax: SwiftierSyntax {    
     public var syntax: ClassDeclSyntax
     public var identifier: String {
         syntax.name.text
     }
+    
+    public var functions: [FunctionSyntax] {
+        content
+            .search(for: \.functionSyntax)
+            .construct()
+    }
+    
+    
     public var enums: [EnumSyntax] {
         content
             .search(for: \.enumSyntax)
