@@ -41,8 +41,10 @@ public extension Swiftier where Swiftier.Syntax == FunctionDeclSyntax {
         syntax.name.text
     }
     
-    var parametes: [FunctionParameterSyntax] {
-        syntax.swifitierParameters
+    var parametes: [Swiftier<FunctionParameterSyntax>] {
+        syntax.swifitierParameters.compactMap { swiftierParameters in
+            Swiftier<FunctionParameterSyntax>(syntax: swiftierParameters)
+        }
     }
 }
 
