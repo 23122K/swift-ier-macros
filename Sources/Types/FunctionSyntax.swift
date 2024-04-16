@@ -14,30 +14,12 @@ public struct FunctionSyntax {
         syntax.name.text
     }
     
-    public var parameters: [ParameterSyntax] {
-        syntax.swifitierParameters.construct()
+    public var parameters: [FunctionParameterSyntax] {
+        syntax.swifitierParameters
     }
     
     public init(_ synax: FunctionDeclSyntax) {
         self.syntax = synax
-    }
-}
-
-
-public enum ParameterSyntax {
-    case parameters(label: String, name: String)
-    case parameter(name: String)
-}
-
-extension Array where Array.Element ==  FunctionParameterSyntax {
-    func construct() -> [ParameterSyntax] {
-        self.compactMap { syntax in
-            guard let secondName = syntax.secondName else {
-                return .parameter(name: syntax.firstName.text)
-            }
-            
-            return .parameters(label: syntax.firstName.text, name: secondName.text)
-        }
     }
 }
 
@@ -50,3 +32,25 @@ extension FunctionDeclSyntax {
     }
 }
 
+extension FunctionParameterSyntax {
+    var swiftierLabel: String? {
+        guard let label = self.secondName?.text
+        else { return nil }
+        
+        return label
+    }
+    
+    var swiftierName: String {
+        return self.firstName.text
+    }
+    
+    var swifiterType: String {
+        return self.swiftierName
+    }
+}
+
+extension OptionalTypeSyntax {
+    var swifiterName: String? {
+        self.wrappedType.as(IdentifierTypeSyntax.self)?.name.text
+    }
+}
