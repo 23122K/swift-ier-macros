@@ -31,7 +31,7 @@ public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
     }
 }
 
-public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
+public extension Swiftier.SwiftierClass {
     init?(_ syntax: Syntax) {
         self.init(syntax: syntax)
     }
