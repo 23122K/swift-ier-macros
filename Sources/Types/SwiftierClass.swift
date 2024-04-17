@@ -7,7 +7,7 @@
 
 import SwiftSyntax
 
-public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
+public extension SwiftierClass {
     var name: String { syntax.name.text }
     var enums: [SwiftierEnum] {
         syntax.content
@@ -31,8 +31,11 @@ public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
     }
 }
 
-public extension Swiftier.SwiftierClass {
-    init?(_ syntax: Syntax) {
+public extension SwiftierClass {
+    init?(syntax: some SyntaxProtocol) {
+        guard let syntax = syntax.as(Syntax.self)
+        else { return nil }
+        
         self.init(syntax: syntax)
     }
 }

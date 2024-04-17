@@ -7,6 +7,12 @@
 
 import SwiftSyntax
 
+public typealias SwiftierActor = Swiftier<ActorDeclSyntax>
+public typealias SwiftierFunction = Swiftier<FunctionDeclSyntax>
+public typealias SwiftierClass = Swiftier<ClassDeclSyntax>
+public typealias SwiftierEnum = Swiftier<EnumDeclSyntax>
+public typealias SwiftierStruct = Swiftier<StructDeclSyntax>
+
 @frozen public struct Swiftier<Syntax> {
     public typealias Syntax = Syntax
     
@@ -18,12 +24,6 @@ import SwiftSyntax
 }
 
 public extension Swiftier {
-    typealias SwiftierActor = Swiftier<ActorDeclSyntax>
-    typealias SwiftierFunction = Swiftier<FunctionDeclSyntax>
-    typealias SwiftierClass = Swiftier<ClassDeclSyntax>
-    typealias SwiftierEnum = Swiftier<EnumDeclSyntax>
-    typealias SwiftierStruct = Swiftier<StructDeclSyntax>
-    
     @frozen struct SyntaxType {
         let `protocol`: ProtocolDeclSyntax.Type
         let `class`:    ClassDeclSyntax.Type
