@@ -1,11 +1,6 @@
-//
-//  File.swift
-//  
-//
-//  Created by Patryk Maciąg on 16/04/2024.
-//
-
 import SwiftSyntax
+
+public typealias SwiftierFunction = Swiftier<FunctionDeclSyntax>
 
 public extension Swiftier where Swiftier.Syntax == OptionalTypeSyntax {
     var type: String? {
