@@ -30,3 +30,9 @@ public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
             .construct()
     }
 }
+
+public extension Swiftier where Swiftier.Syntax == ClassDeclSyntax {
+    init?(_ syntax: Syntax) {
+        self.init(syntax: syntax)
+    }
+}
