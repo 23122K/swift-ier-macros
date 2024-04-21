@@ -2,8 +2,7 @@ import SwiftSyntax
 
 @frozen public struct Swiftier<Syntax> {
     public typealias Syntax = Syntax
-    
-    public let syntax: Syntax
+    public var syntax: Syntax
     
     public init(syntax: Syntax) {
         self.syntax = syntax

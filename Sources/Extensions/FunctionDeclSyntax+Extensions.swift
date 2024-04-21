@@ -1,0 +1,5 @@
+import SwiftSyntax
+
+extension FunctionDeclSyntax {
+    
+}
