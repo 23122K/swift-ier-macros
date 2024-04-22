@@ -54,19 +54,22 @@ public extension Swiftier.Variable {
     struct Builder {
         public var variable: Swiftier.Variable
         
-        public mutating func type(_ type: String) -> Builder {
-            variable.type = type
-            return self
+        public func type(_ type: String) -> Builder {
+            var builder = self
+            builder.variable.type = type
+            return builder
         }
         
-        public mutating func identifier(_ identifier: String) -> Builder {
-            variable.identifier = identifier
-            return self
+        public func identifier(_ identifier: String) -> Builder {
+            var builder = self
+            builder.variable.identifier = identifier
+            return builder
         }
         
-        public mutating func specifier(_ specifier: Keyword) -> Builder {
-            variable.specifier = specifier
-            return self
+        public func specifier(_ specifier: Keyword) -> Builder {
+            var builder = self
+            builder.variable.specifier = specifier
+            return builder
         }
        
        public static func make() -> Builder {
