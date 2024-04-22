@@ -6,11 +6,13 @@ enum SwiftierError: Error {
     case couldNotConstruct
 }
 
-extension Swiftier {
-    enum `Defaults`: String {
-        case name
-        case specifier
-        case type
+extension Swiftier<VariableDeclSyntax> {
+    struct `Defaults` {
+        static let identifier: String = "foo"
+        static let specifier: Keyword = .let
+        static let type: String = "Int"
+        
+        private init() { }
     }
 }
 
@@ -30,46 +32,37 @@ extension PatternBindingListSyntax {
     }
 }
 
-
-public extension SwiftierVariable {
-    static func make() -> Self {
-        let syntax = Syntax(
-            bindingSpecifier: .specifier(.let),
-            bindings: [
-                .binding(name: Defaults.name.rawValue, type: Defaults.type.rawValue)
-            ]
-        )
+public extension Swiftier<VariableDeclSyntax> {
+    struct Variable {
+        var identifier: String
+        var specifier: Keyword
+        var type: String
         
-        return Self(syntax: syntax)
-    }
-    
-    mutating func type(_ type: String) {
-        let node = syntax.bindings.first!.index
-        syntax.bindings[node] = .binding(type: type)
-    }
-    
-    mutating func name(_ name: String) {
-        let node = syntax.bindings.first!.index
-        syntax.bindings[node] = .binding(name: name)
-    }
-    
-    func construct() throws -> Self {
-        if identifier == Defaults.name.rawValue {
-            throw SwiftierError.couldNotConstruct
+        func construct() throws -> Syntax {
+            try .init(
+                bindingSpecifier: .specifier(Self.check(specifier)),
+                bindings: [
+                    .binding(
+                        name: Self.check(identifier),
+                        type: Self.check(type))
+                ]
+            )
         }
         
-        return self
-    }
-    
-    init(specifier keyword: Keyword, identifer name: String, type: String) {
-        let syntax = Syntax(
-            bindingSpecifier: .specifier(keyword),
-            bindings: [
-                .binding(name: name, type: type)
-            ]
-        )
+        static func make() -> Self {
+            self.init(
+                identifier: Defaults.identifier,
+                specifier: Defaults.specifier,
+                type: Defaults.type
+            )
+        }
         
-        self.init(syntax: syntax)
+        private static func check<T>(_ optionalValue: Optional<T>) throws -> T {
+            guard let value = optionalValue
+            else { throw SwiftierError.couldNotConstruct }
+            
+            return value
+        }
     }
 }
 
