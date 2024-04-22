@@ -50,8 +50,8 @@ public extension Swiftier<VariableDeclSyntax> {
     }
 }
 
-extension Swiftier.Variable {
-    public struct Builder {
+public extension Swiftier.Variable {
+    struct Builder {
         public var variable: Swiftier.Variable
         
         public mutating func type(_ type: String) -> Builder {
