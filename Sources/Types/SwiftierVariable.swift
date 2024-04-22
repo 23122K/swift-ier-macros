@@ -38,15 +38,27 @@ public extension Swiftier where Swiftier.Syntax == VariableDeclSyntax {
 
 public extension Swiftier<VariableDeclSyntax> {
      struct Variable {
-        public var identifier: String
-        public var specifier: Keyword
-        public var type: String
+        private(set) var identifier: String
+        private(set) var specifier: Keyword
+        private(set) var type: String
         
         internal init(identifier: String, specifier: Keyword, type: String) {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
         }
+         
+         mutating func type(_ type: String) {
+             self.type = type
+         }
+         
+         mutating func identifier(_ identifier: String) {
+             self.identifier = identifier
+         }
+         
+         mutating func specifier(_ specifier: Keyword) {
+             self.specifier = specifier
+         }
         
         public func construct() throws -> Syntax {
             try .init(
