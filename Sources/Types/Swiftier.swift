@@ -16,6 +16,8 @@ public extension Swiftier {
         let `actor`:    ActorDeclSyntax.Type
         let `struct`:   StructDeclSyntax.Type
         
+        let `variable`: VariableDeclSyntax.Type
+        
         let `enum`:     EnumDeclSyntax.Type
         let `case`:     EnumCaseDeclSyntax.Type
         

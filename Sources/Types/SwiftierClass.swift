@@ -4,6 +4,12 @@ public typealias SwiftierClass = Swiftier<ClassDeclSyntax>
 
 public extension SwiftierClass {
     var name: String { syntax.name.text }
+    var variables: [SwiftierVariable] {
+        syntax.content
+            .search(for: \.variable)
+            .construct()
+    }
+    
     var enums: [SwiftierEnum] {
         syntax.content
             .search(for: \.enum)
@@ -14,6 +20,7 @@ public extension SwiftierClass {
             .search(for: \.function)
             .construct()
     }
+    
     var structs: [SwiftierStruct] {
         syntax.content
             .search(for: \.struct)
