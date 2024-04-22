@@ -50,6 +50,15 @@ public extension Swiftier<VariableDeclSyntax> {
              ))
          }
          
+         public func syntax() -> Syntax {
+             Syntax(
+                bindingSpecifier: .specifier(specifier),
+                bindings: [
+                    .binding(name: identifier, type: type)
+                ]
+             )
+         }
+         
         init(identifier: String, specifier: Keyword, type: String) throws {
             self.identifier = identifier
             self.specifier = specifier
