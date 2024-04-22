@@ -32,11 +32,21 @@ extension PatternBindingListSyntax {
     }
 }
 
+public extension Swiftier where Swiftier.Syntax == VariableDeclSyntax {
+    static let variable = Variable.make()
+}
+
 public extension Swiftier<VariableDeclSyntax> {
     struct Variable {
         var identifier: String
         var specifier: Keyword
         var type: String
+        
+        internal init(identifier: String, specifier: Keyword, type: String) {
+            self.identifier = identifier
+            self.specifier = specifier
+            self.type = type
+        }
         
         func construct() throws -> Syntax {
             try .init(
