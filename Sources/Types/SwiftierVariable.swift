@@ -2,6 +2,18 @@ import SwiftSyntax
 
 public typealias SwiftierVariable = Swiftier<VariableDeclSyntax>
 
+enum SwiftierError: Error {
+    case couldNotConstruct
+}
+
+extension Swiftier {
+    enum `Defaults`: String {
+        case name
+        case specifier
+        case type
+    }
+}
+
 public extension SwiftierVariable {
     var specifier: String { syntax.bindingSpecifier.text }
     var identifier: String? { syntax.bindings.indentifier() }
@@ -18,7 +30,37 @@ extension PatternBindingListSyntax {
     }
 }
 
+
 public extension SwiftierVariable {
+    static func make() -> Self {
+        let syntax = Syntax(
+            bindingSpecifier: .specifier(.let),
+            bindings: [
+                .binding(name: Defaults.name.rawValue, type: Defaults.type.rawValue)
+            ]
+        )
+        
+        return Self(syntax: syntax)
+    }
+    
+    mutating func type(_ type: String) {
+        let node = syntax.bindings.first!.index
+        syntax.bindings[node] = .binding(type: type)
+    }
+    
+    mutating func name(_ name: String) {
+        let node = syntax.bindings.first!.index
+        syntax.bindings[node] = .binding(name: name)
+    }
+    
+    func construct() throws -> Self {
+        if identifier == Defaults.name.rawValue {
+            throw SwiftierError.couldNotConstruct
+        }
+        
+        return self
+    }
+    
     init(specifier keyword: Keyword, identifer name: String, type: String) {
         let syntax = Syntax(
             bindingSpecifier: .specifier(keyword),
@@ -37,6 +79,14 @@ extension PatternBindingSyntax {
             pattern: IdentifierPatternSyntax.identifier(name),
             typeAnnotation: TypeAnnotationSyntax.type(type)
         )
+    }
+    
+    static func binding(name: String) -> Self {
+        Self(pattern: IdentifierPatternSyntax.identifier(name))
+    }
+    
+    static func binding(type: String) -> Self {
+        Self(pattern: IdentifierPatternSyntax.identifier("Chuj"), typeAnnotation: .type(type))
     }
     
     func indentifier() -> String? {
