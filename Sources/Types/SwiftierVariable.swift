@@ -33,7 +33,7 @@ extension PatternBindingListSyntax {
 }
 
 public extension Swiftier where Swiftier.Syntax == VariableDeclSyntax {
-    static let variable = Variable.make()
+    
 }
 
 public extension Swiftier<VariableDeclSyntax> {
@@ -41,45 +41,47 @@ public extension Swiftier<VariableDeclSyntax> {
         var identifier: String
         var specifier: Keyword
         var type: String
-        
-        internal init(identifier: String, specifier: Keyword, type: String) {
+         
+        internal init(identifier: String, specifier: Keyword, type: String) throws {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
         }
          
-         public mutating func type(_ type: String) -> Self {
-             self.type = type
-             return self
+         public func type(_ type: String) -> Builder {
+             var builder = Builder(variable: self)
+             builder.variable.type = type
+             return builder
          }
          
-         public mutating func identifier(_ identifier: String) -> Self {
-             self.identifier = identifier
-             return self
+         public func identifier(_ identifier: String) -> Builder {
+             var builder = Builder(variable: self)
+             builder.variable.identifier = identifier
+             return builder
          }
          
-         public mutating func specifier(_ specifier: Keyword) -> Self {
-             self.specifier = specifier
-             return self
+         public mutating func specifier(_ specifier: Keyword) -> Builder {
+             var builder = Builder(variable: self)
+             builder.variable.specifier = specifier
+             return builder
          }
         
-        public func construct() throws -> Syntax {
-            try .init(
-                bindingSpecifier: .specifier(Self.check(specifier)),
-                bindings: [
-                    .binding(
-                        name: Self.check(identifier),
-                        type: Self.check(type))
-                ]
-            )
-        }
-        
-        public static func make() -> Self {
-            self.init(
+        public static func make() -> Builder {
+            Builder(variable: try! .init(
                 identifier: Defaults.identifier,
                 specifier: Defaults.specifier,
                 type: Defaults.type
-            )
+            ))
+        }
+    }
+}
+
+extension Swiftier.Variable {
+    public struct Builder {
+        public var variable: Swiftier.Variable
+        
+        public func construct() throws -> Swiftier.Variable {
+            return variable
         }
         
         private static func check<T>(_ optionalValue: Optional<T>) throws -> T {
