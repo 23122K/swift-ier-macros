@@ -7,7 +7,7 @@ enum SwiftierError: Error {
 }
 
 extension Swiftier<VariableDeclSyntax> {
-    struct `Defaults` {
+    public struct `Defaults` {
         static let identifier: String = "foo"
         static let specifier: Keyword = .let
         static let type: String = "Int"
@@ -42,36 +42,10 @@ public extension Swiftier<VariableDeclSyntax> {
         var specifier: Keyword
         var type: String
          
-        internal init(identifier: String, specifier: Keyword, type: String) throws {
+        init(identifier: String, specifier: Keyword, type: String) throws {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
-        }
-         
-         public func type(_ type: String) -> Builder {
-             var builder = Builder(variable: self)
-             builder.variable.type = type
-             return builder
-         }
-         
-         public func identifier(_ identifier: String) -> Builder {
-             var builder = Builder(variable: self)
-             builder.variable.identifier = identifier
-             return builder
-         }
-         
-         public mutating func specifier(_ specifier: Keyword) -> Builder {
-             var builder = Builder(variable: self)
-             builder.variable.specifier = specifier
-             return builder
-         }
-        
-        public static func make() -> Builder {
-            Builder(variable: try! .init(
-                identifier: Defaults.identifier,
-                specifier: Defaults.specifier,
-                type: Defaults.type
-            ))
         }
     }
 }
@@ -79,6 +53,29 @@ public extension Swiftier<VariableDeclSyntax> {
 extension Swiftier.Variable {
     public struct Builder {
         public var variable: Swiftier.Variable
+        
+        public mutating func type(_ type: String) -> Builder {
+            variable.type = type
+            return self
+        }
+        
+        public mutating func identifier(_ identifier: String) -> Builder {
+            variable.identifier = identifier
+            return self
+        }
+        
+        public mutating func specifier(_ specifier: Keyword) -> Builder {
+            variable.specifier = specifier
+            return self
+        }
+       
+       public static func make() -> Builder {
+           Builder(variable: try! .init(
+            identifier: Swiftier.Defaults.identifier,
+            specifier: Swiftier.Defaults.specifier,
+            type: Swiftier.Defaults.type
+           ))
+       }
         
         public func construct() throws -> Swiftier.Variable {
             return variable
