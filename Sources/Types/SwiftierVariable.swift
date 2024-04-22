@@ -38,9 +38,9 @@ public extension Swiftier where Swiftier.Syntax == VariableDeclSyntax {
 
 public extension Swiftier<VariableDeclSyntax> {
      struct Variable {
-        private(set) var identifier: String
-        private(set) var specifier: Keyword
-        private(set) var type: String
+        public private(set) var identifier: String
+        public private(set) var specifier: Keyword
+        public private(set) var type: String
         
         internal init(identifier: String, specifier: Keyword, type: String) {
             self.identifier = identifier
@@ -48,15 +48,15 @@ public extension Swiftier<VariableDeclSyntax> {
             self.type = type
         }
          
-         mutating func type(_ type: String) {
+         public mutating func type(_ type: String) {
              self.type = type
          }
          
-         mutating func identifier(_ identifier: String) {
+         public mutating func identifier(_ identifier: String) {
              self.identifier = identifier
          }
          
-         mutating func specifier(_ specifier: Keyword) {
+         public mutating func specifier(_ specifier: Keyword) {
              self.specifier = specifier
          }
         
