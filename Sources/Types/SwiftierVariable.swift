@@ -3,7 +3,23 @@ import SwiftSyntax
 public typealias SwiftierVariable = Swiftier<VariableDeclSyntax>
 
 public extension SwiftierVariable {
-    init(keyword: Keyword, name: String, type: String) {
+    var specifier: String { syntax.bindingSpecifier.text }
+    var identifier: String? { syntax.bindings.indentifier() }
+    var type: String? { syntax.bindings.type() }
+}
+
+extension PatternBindingListSyntax {
+    func indentifier() -> String? {
+        self.first?.indentifier()
+    }
+    
+    func type() -> String? {
+        self.first?.type()
+    }
+}
+
+public extension SwiftierVariable {
+    init(specifier keyword: Keyword, identifer name: String, type: String) {
         let syntax = Syntax(
             bindingSpecifier: .specifier(keyword),
             bindings: [
@@ -21,6 +37,16 @@ extension PatternBindingSyntax {
             pattern: IdentifierPatternSyntax.identifier(name),
             typeAnnotation: TypeAnnotationSyntax.type(type)
         )
+    }
+    
+    func indentifier() -> String? {
+        IdentifierTypeSyntax(self)?.name.text
+    }
+    
+    func type() -> String? {
+        let typeAnnotation = TypeAnnotationSyntax(self)
+        let type = IdentifierTypeSyntax(typeAnnotation)
+        return type?.name.text
     }
 }
 
