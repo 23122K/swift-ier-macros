@@ -42,6 +42,14 @@ public extension Swiftier<VariableDeclSyntax> {
         var specifier: Keyword
         var type: String
          
+         public static func make() -> Builder {
+             Builder(variable: try! .init(
+              identifier: Swiftier.Defaults.identifier,
+              specifier: Swiftier.Defaults.specifier,
+              type: Swiftier.Defaults.type
+             ))
+         }
+         
         init(identifier: String, specifier: Keyword, type: String) throws {
             self.identifier = identifier
             self.specifier = specifier
@@ -72,13 +80,6 @@ public extension Swiftier.Variable {
             return builder
         }
        
-       public static func make() -> Builder {
-           Builder(variable: try! .init(
-            identifier: Swiftier.Defaults.identifier,
-            specifier: Swiftier.Defaults.specifier,
-            type: Swiftier.Defaults.type
-           ))
-       }
         
         public func construct() throws -> Swiftier.Variable {
             return variable
