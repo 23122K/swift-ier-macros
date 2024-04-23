@@ -32,7 +32,7 @@ extension PatternBindingListSyntax {
     }
 }
 
-extension Swiftier<VariableDeclSyntax> {
+public extension Swiftier<VariableDeclSyntax> {
     struct Variable {
         public var identifier: String
         public var specifier: Keyword
@@ -63,7 +63,7 @@ extension Swiftier<VariableDeclSyntax> {
     }
 }
 
-extension Swiftier.Variable {
+public extension Swiftier.Variable {
     func build(_ edit: (inout Self) -> Void) -> Self {
         var value: Self = self
         edit(&value)
