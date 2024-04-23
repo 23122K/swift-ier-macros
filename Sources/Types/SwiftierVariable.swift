@@ -7,7 +7,7 @@ enum SwiftierError: Error {
 }
 
 extension Swiftier<VariableDeclSyntax> {
-    public struct `Defaults` {
+    struct `Defaults` {
         static let identifier: String = "example"
         static let specifier: Keyword = .let
         static let type: String = "Int"
@@ -39,12 +39,14 @@ public extension Swiftier<VariableDeclSyntax> {
         public var identifier: String
         public var specifier: Keyword
         public var type: String
+        public var value: String?
+        
         
         public static func initiate() -> Self {
             self.init(
-                identifier: Swiftier.Defaults.identifier,
-                specifier: Swiftier.Defaults.specifier,
-                type: Swiftier.Defaults.type
+                identifier: Defaults.identifier,
+                specifier: Defaults.specifier,
+                type: Defaults.type
             )
         }
         
@@ -54,12 +56,12 @@ public extension Swiftier<VariableDeclSyntax> {
             self.type = type
         }
         
-        public func construct() -> Swiftier<Syntax> {
+        public func swiftier() -> Swiftier<Syntax> {
             return .init(
                 syntax: Syntax(
                     bindingSpecifier: .specifier(specifier),
                     bindings: [
-                        .binding(name: identifier, type: type)
+                        .binding(name: identifier, type: type),
                     ]
                 )
             )
