@@ -60,6 +60,17 @@ public extension SwiftierC<VariableDeclSyntax> {
             self.specifier = specifier
             return self
         }
+        
+        public func construct() -> Self {
+            self.syntax = Syntax(
+                bindingSpecifier: .specifier(specifier),
+                bindings: [
+                    .binding(name: identifier, type: type)
+                ]
+            )
+            
+            return self
+        }
                 
         internal required init(identifier: String, specifier: Keyword, type: String) {
             self.identifier = identifier
