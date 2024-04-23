@@ -32,6 +32,14 @@ extension PatternBindingListSyntax {
     }
 }
 
+public extension SwiftierC.Variable {
+    func build(_ edit: (inout Self) -> Void) -> Self {
+        var value: Self = self
+        edit(&value)
+        return value
+    }
+}
+
 public extension SwiftierC<VariableDeclSyntax> {
     class Variable: SwiftierC<VariableDeclSyntax> {
         var identifier: String
