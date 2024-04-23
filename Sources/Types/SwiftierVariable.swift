@@ -8,7 +8,7 @@ enum SwiftierError: Error {
 
 extension Swiftier<VariableDeclSyntax> {
     public struct `Defaults` {
-        static let identifier: String = "foo"
+        static let identifier: String = "example"
         static let specifier: Keyword = .let
         static let type: String = "Int"
         
@@ -32,8 +32,8 @@ extension PatternBindingListSyntax {
     }
 }
 
-public extension Swiftier<VariableDeclSyntax> {
-    class Variable {
+public extension SwiftierC {
+    class Variable: SwiftierC<VariableDeclSyntax> {
         var identifier: String
         var specifier: Keyword
         var type: String
@@ -60,20 +60,20 @@ public extension Swiftier<VariableDeclSyntax> {
             self.specifier = specifier
             return self
         }
-        
-        public func syntax() -> Syntax {
-            Syntax(
-                bindingSpecifier: .specifier(specifier),
-                bindings: [
-                    .binding(name: identifier, type: type)
-                ]
-            )
-        }
-        
+                
         internal required init(identifier: String, specifier: Keyword, type: String) {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
+            
+            super.init(
+                syntax: Syntax(
+                    bindingSpecifier: .specifier(specifier),
+                    bindings: [
+                        .binding(name: identifier, type: type)
+                    ]
+                )
+            )
         }
         
         private static func check<T>(_ optionalValue: Optional<T>) throws -> T {

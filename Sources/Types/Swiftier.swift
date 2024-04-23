@@ -9,6 +9,15 @@ import SwiftSyntax
     }
 }
 
+public class SwiftierC<Syntax> {
+    public typealias Syntax = Syntax
+    public var syntax: Syntax
+    
+    public init(syntax: Syntax) {
+        self.syntax = syntax
+    }
+}
+
 public extension Swiftier {
     @frozen struct `Type` {
         let `protocol`: ProtocolDeclSyntax.Type
