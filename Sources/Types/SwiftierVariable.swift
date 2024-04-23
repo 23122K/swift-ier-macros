@@ -32,6 +32,45 @@ extension PatternBindingListSyntax {
     }
 }
 
+extension Swiftier<VariableDeclSyntax> {
+    struct Variable {
+        public var identifier: String
+        public var specifier: Keyword
+        public var type: String
+        
+        public static func foundation() -> Self {
+            self.init(
+                identifier: Swiftier.Defaults.identifier,
+                specifier: Swiftier.Defaults.specifier,
+                type: Swiftier.Defaults.type
+            )
+        }
+        
+        init(identifier: String, specifier: Keyword, type: String) {
+            self.identifier = identifier
+            self.specifier = specifier
+            self.type = type
+        }
+        
+        public func construct() -> Syntax {
+            return Syntax(
+                bindingSpecifier: .specifier(specifier),
+                bindings: [
+                    .binding(name: identifier, type: type)
+                ]
+            )
+        }
+    }
+}
+
+extension Swiftier.Variable {
+    func build(_ edit: (inout Self) -> Void) -> Self {
+        var value: Self = self
+        edit(&value)
+        return value
+    }
+}
+
 public extension SwiftierC.Variable {
     func build(_ edit: (inout Self) -> Void) -> Self {
         var value: Self = self
