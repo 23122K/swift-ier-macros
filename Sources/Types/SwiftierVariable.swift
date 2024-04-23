@@ -42,9 +42,9 @@ public extension SwiftierC.Variable {
 
 public extension SwiftierC<VariableDeclSyntax> {
     class Variable: SwiftierC<VariableDeclSyntax> {
-        var identifier: String
-        var specifier: Keyword
-        var type: String
+        public var identifier: String
+        public var specifier: Keyword
+        public var type: String
         
         public static func foundation() -> Self {
             self.init(
