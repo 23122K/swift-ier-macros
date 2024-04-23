@@ -16,12 +16,6 @@ extension Swiftier<VariableDeclSyntax> {
     }
 }
 
-public extension SwiftierVariable {
-    var specifier: String { syntax.bindingSpecifier.text }
-    var identifier: String? { syntax.bindings.indentifier() }
-    var type: String? { syntax.bindings.type() }
-}
-
 extension PatternBindingListSyntax {
     func indentifier() -> String? {
         self.first?.indentifier()
@@ -32,13 +26,21 @@ extension PatternBindingListSyntax {
     }
 }
 
+public extension Swiftier.Variable {
+    func construct(_ variable: (inout Self) -> Void) -> Self {
+        var value: Self = self
+        variable(&value)
+        return value
+    }
+}
+
 public extension Swiftier<VariableDeclSyntax> {
     struct Variable {
         public var identifier: String
         public var specifier: Keyword
         public var type: String
         
-        public static func foundation() -> Self {
+        public static func initiate() -> Self {
             self.init(
                 identifier: Swiftier.Defaults.identifier,
                 specifier: Swiftier.Defaults.specifier,
@@ -52,79 +54,8 @@ public extension Swiftier<VariableDeclSyntax> {
             self.type = type
         }
         
-        public func construct() -> Syntax {
-            return Syntax(
-                bindingSpecifier: .specifier(specifier),
-                bindings: [
-                    .binding(name: identifier, type: type)
-                ]
-            )
-        }
-    }
-}
-
-public extension Swiftier.Variable {
-    func build(_ edit: (inout Self) -> Void) -> Self {
-        var value: Self = self
-        edit(&value)
-        return value
-    }
-}
-
-public extension SwiftierC.Variable {
-    func build(_ edit: (inout Self) -> Void) -> Self {
-        var value: Self = self
-        edit(&value)
-        return value
-    }
-}
-
-public extension SwiftierC<VariableDeclSyntax> {
-    class Variable: SwiftierC<VariableDeclSyntax> {
-        public var identifier: String
-        public var specifier: Keyword
-        public var type: String
-        
-        public static func foundation() -> Self {
-            self.init(
-                identifier: Swiftier.Defaults.identifier,
-                specifier: Swiftier.Defaults.specifier,
-                type: Swiftier.Defaults.type
-            )
-        }
-        
-        public func type(_ type: String) -> Self {
-            self.type = type
-            return self
-        }
-        
-        public func identifier(_ identifier: String) -> Self {
-            self.identifier = identifier
-            return self
-        }
-        
-        public func specifier(_ specifier: Keyword) -> Self {
-            self.specifier = specifier
-            return self
-        }
-        
-        public func construct() -> Self {
-            self.syntax = Syntax(
-                bindingSpecifier: .specifier(specifier),
-                bindings: [
-                    .binding(name: identifier, type: type)
-                ]
-            )
-            
-            return self
-        }
-                
-        internal required init(identifier: String, specifier: Keyword, type: String) {
-            self.identifier = identifier
-            self.specifier = specifier
-            self.type = type
-            
-            super.init(
+        public func construct() -> Swiftier<Syntax> {
+            return .init(
                 syntax: Syntax(
                     bindingSpecifier: .specifier(specifier),
                     bindings: [
@@ -132,13 +63,6 @@ public extension SwiftierC<VariableDeclSyntax> {
                     ]
                 )
             )
-        }
-        
-        private static func check<T>(_ optionalValue: Optional<T>) throws -> T {
-            guard let value = optionalValue
-            else { throw SwiftierError.couldNotConstruct }
-            
-            return value
         }
     }
 }
