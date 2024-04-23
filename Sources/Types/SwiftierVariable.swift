@@ -32,7 +32,7 @@ extension PatternBindingListSyntax {
     }
 }
 
-public extension SwiftierC {
+public extension SwiftierC<VariableDeclSyntax> {
     class Variable: SwiftierC<VariableDeclSyntax> {
         var identifier: String
         var specifier: Keyword
