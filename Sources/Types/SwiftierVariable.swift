@@ -32,66 +32,45 @@ extension PatternBindingListSyntax {
     }
 }
 
-public extension Swiftier where Swiftier.Syntax == VariableDeclSyntax {
-    
-}
-
 public extension Swiftier<VariableDeclSyntax> {
-     struct Variable {
+    class Variable {
         var identifier: String
         var specifier: Keyword
         var type: String
-         
-         public static func make() -> Builder {
-             Builder(variable: try! .init(
-              identifier: Swiftier.Defaults.identifier,
-              specifier: Swiftier.Defaults.specifier,
-              type: Swiftier.Defaults.type
-             ))
-         }
-         
-         public func syntax() -> Syntax {
-             Syntax(
+        
+        public static func foundation() -> Self {
+            self.init(
+                identifier: Swiftier.Defaults.identifier,
+                specifier: Swiftier.Defaults.specifier,
+                type: Swiftier.Defaults.type
+            )
+        }
+        
+        public func type(_ type: String) {
+            self.type = type
+        }
+        
+        public func identifier(_ identifier: String) {
+            self.identifier = identifier
+        }
+        
+        public func specifier(_ specifier: Keyword) {
+            self.specifier = specifier
+        }
+        
+        public func syntax() -> Syntax {
+            Syntax(
                 bindingSpecifier: .specifier(specifier),
                 bindings: [
                     .binding(name: identifier, type: type)
                 ]
-             )
-         }
-         
-        init(identifier: String, specifier: Keyword, type: String) throws {
+            )
+        }
+        
+        internal required init(identifier: String, specifier: Keyword, type: String) {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
-        }
-    }
-}
-
-public extension Swiftier.Variable {
-    struct Builder {
-        public var variable: Swiftier.Variable
-        
-        public func type(_ type: String) -> Builder {
-            var builder = self
-            builder.variable.type = type
-            return builder
-        }
-        
-        public func identifier(_ identifier: String) -> Builder {
-            var builder = self
-            builder.variable.identifier = identifier
-            return builder
-        }
-        
-        public func specifier(_ specifier: Keyword) -> Builder {
-            var builder = self
-            builder.variable.specifier = specifier
-            return builder
-        }
-       
-        
-        public func construct() throws -> Swiftier.Variable {
-            return variable
         }
         
         private static func check<T>(_ optionalValue: Optional<T>) throws -> T {
