@@ -46,16 +46,19 @@ public extension Swiftier<VariableDeclSyntax> {
             )
         }
         
-        public func type(_ type: String) {
+        public func type(_ type: String) -> Self {
             self.type = type
+            return self
         }
         
-        public func identifier(_ identifier: String) {
+        public func identifier(_ identifier: String) -> Self {
             self.identifier = identifier
+            return self
         }
         
-        public func specifier(_ specifier: Keyword) {
+        public func specifier(_ specifier: Keyword) -> Self {
             self.specifier = specifier
+            return self
         }
         
         public func syntax() -> Syntax {
