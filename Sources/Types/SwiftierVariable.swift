@@ -81,6 +81,19 @@ public extension Swiftier<VariableDeclSyntax> {
     }
 }
 
+extension AttributeListSyntax {
+    static func construct(from attributes: [String?]) -> AttributeListSyntax {
+        return .init(
+            attributes
+                .compactMap { $0 }
+                .compactMap { attribute in
+                        .attribute(.construct(with: attribute))
+                }
+            
+        )
+    }
+}
+
 extension DeclModifierSyntax {
     static func construct(with modifier: String) -> Self {
         DeclModifierSyntax(
