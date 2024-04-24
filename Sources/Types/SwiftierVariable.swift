@@ -40,8 +40,8 @@ public extension Swiftier<VariableDeclSyntax> {
         public var specifier: Keyword
         public var type: String
         public var value: String?
-        public var attribute: String?
-        public var modifiers: [String]?
+        public var attributes: [String] = []
+        public var modifiers: [String] = []
         
         public static func initiate() -> Self {
             self.init(
@@ -55,18 +55,13 @@ public extension Swiftier<VariableDeclSyntax> {
             self.identifier = identifier
             self.specifier = specifier
             self.type = type
+            self.attributes = []
         }
         
         public func syntax() -> VariableDeclSyntax {
             return .init(
-                attributes: [
-                    .attribute(
-                        AttributeSyntax.construct(with: attribute!)
-                    )
-                ],
-                modifiers: [
-                    .construct(with: modifiers!.first!)
-                ],
+                attributes: .construct(from: attributes),
+                modifiers: .construct(with: modifiers),
                 bindingSpecifier: .specifier(specifier),
                 bindings: [
                     .construct(identifier: identifier, type: type, default: value)
@@ -82,25 +77,28 @@ public extension Swiftier<VariableDeclSyntax> {
 }
 
 extension AttributeListSyntax {
-    static func construct(from attributes: [String?]) -> AttributeListSyntax {
+    static func construct(from attributes: [String]) -> AttributeListSyntax {
         return .init(
-            attributes
-                .compactMap { $0 }
-                .compactMap { attribute in
-                        .attribute(.construct(with: attribute))
-                }
-            
+            attributes.map { attribute in
+                .attribute(
+                    .construct(with: attribute)
+                )
+            }
         )
     }
 }
 
-extension DeclModifierSyntax {
-    static func construct(with modifier: String) -> Self {
-        DeclModifierSyntax(
-            name: .token(
-                .identifier(modifier)
-            ),
-            detail: nil
+extension DeclModifierListSyntax {
+    static func construct(with modifiers: [String]) -> Self {
+        .init(
+            modifiers.map { modifier in
+                DeclModifierSyntax(
+                    name: .token(
+                        .identifier(modifier)
+                    ),
+                    detail: nil
+                )
+            }
         )
     }
 }
