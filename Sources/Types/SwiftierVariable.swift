@@ -95,6 +95,7 @@ extension DeclModifierSyntax {
 extension AttributeSyntax {
     static func construct(with attribute: String) -> Self {
         AttributeSyntax(
+            leadingTrivia: .newline,
             atSign: .token(.atSign),
             attributeName: IdentifierTypeSyntax(
                 name: .identifier(attribute)
