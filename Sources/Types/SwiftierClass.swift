@@ -7,29 +7,29 @@ public extension SwiftierClass {
     var variables: [SwiftierVariable] {
         syntax.content
             .search(for: \.variable)
-            .construct()
+            .swiftier()
     }
     
     var enums: [SwiftierEnum] {
         syntax.content
             .search(for: \.enum)
-            .construct()
+            .swiftier()
     }
     var functions: [SwiftierFunction] {
         syntax.content
             .search(for: \.function)
-            .construct()
+            .swiftier()
     }
     
     var structs: [SwiftierStruct] {
         syntax.content
             .search(for: \.struct)
-            .construct()
+            .swiftier()
     }
     var actors: [SwiftierActor] {
         syntax.content
             .search(for: \.actor)
-            .construct()
+            .swiftier()
     }
 }
 

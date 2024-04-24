@@ -40,7 +40,8 @@ public extension Swiftier<VariableDeclSyntax> {
         public var specifier: Keyword
         public var type: String
         public var value: String?
-        
+        public var attribute: String?
+        public var modifiers: [String]?
         
         public static func initiate() -> Self {
             self.init(
@@ -56,35 +57,62 @@ public extension Swiftier<VariableDeclSyntax> {
             self.type = type
         }
         
-        public func swiftier() -> Swiftier<Syntax> {
+        public func syntax() -> VariableDeclSyntax {
             return .init(
-                syntax: Syntax(
-                    bindingSpecifier: .specifier(specifier),
-                    bindings: [
-                        .binding(name: identifier, type: type),
-                    ]
-                )
+                attributes: [
+                    .attribute(
+                        AttributeSyntax.construct(with: attribute!)
+                    )
+                ],
+                modifiers: [
+                    .construct(with: modifiers!.first!)
+                ],
+                bindingSpecifier: .specifier(specifier),
+                bindings: [
+                    .construct(identifier: identifier, type: type, default: value)
+                ]
             )
+        }
+        
+        public func swiftier() -> Swiftier<Syntax> {
+            let syntax = syntax()
+            return .init(syntax: syntax)
         }
     }
 }
 
-extension PatternBindingSyntax {
-    static func binding(name: String, type: String) -> Self {
-        return PatternBindingSyntax(
-            pattern: IdentifierPatternSyntax.identifier(name),
-            typeAnnotation: TypeAnnotationSyntax.type(type)
+extension DeclModifierSyntax {
+    static func construct(with modifier: String) -> Self {
+        DeclModifierSyntax(
+            name: .token(
+                .identifier(modifier)
+            ),
+            detail: nil
         )
     }
-    
-    static func binding(name: String) -> Self {
-        Self(pattern: IdentifierPatternSyntax.identifier(name))
+}
+
+extension AttributeSyntax {
+    static func construct(with attribute: String) -> Self {
+        AttributeSyntax(
+            atSign: .token(.atSign),
+            attributeName: IdentifierTypeSyntax(
+                name: .identifier(attribute)
+            )
+        )
     }
-    
-    static func binding(type: String) -> Self {
-        Self(pattern: IdentifierPatternSyntax.identifier("Chuj"), typeAnnotation: .type(type))
+}
+
+extension PatternBindingSyntax {
+    static func construct(identifier name: String, type: String, default value: String?) -> Self {
+        return PatternBindingSyntax(
+            pattern: IdentifierPatternSyntax.construct(with: name),
+            typeAnnotation: TypeAnnotationSyntax.construct(with: type),
+            initializer: InitializerClauseSyntax.construct(with: value),
+            accessorBlock: nil
+        )
     }
-    
+
     func indentifier() -> String? {
         IdentifierTypeSyntax(self)?.name.text
     }
@@ -96,6 +124,12 @@ extension PatternBindingSyntax {
     }
 }
 
+extension PatternSyntaxProtocol {
+    static func construct(with name: String) -> IdentifierPatternSyntax {
+        return IdentifierPatternSyntax(identifier: .token(.identifier(name)))
+    }
+}
+
 extension DeclModifierSyntax {
     static func modifier(_ modifier: TokenSyntax) -> Self {
         DeclModifierSyntax(name: modifier)
@@ -104,8 +138,14 @@ extension DeclModifierSyntax {
 
 //TODO: NA chama wjebałem INT'a
 extension InitializerClauseSyntax {
-    static func initialise(with value: String) -> Self {
-        InitializerClauseSyntax(value: IntegerLiteralExprSyntax(literal: .integerLiteral(value)))
+    static func construct(with value: String?) -> Self? {
+        guard let value
+        else { return nil }
+        
+        return InitializerClauseSyntax(
+            equal: .token(.equal),
+            value: IntegerLiteralExprSyntax(literal: .integerLiteral(value))
+        )
     }
 }
 
@@ -124,7 +164,7 @@ extension IdentifierTypeSyntax {
 }
 
 extension TypeAnnotationSyntax {
-    static func type(_ stringValue: String) -> Self {
+    static func construct(with stringValue: String) -> Self {
         TypeAnnotationSyntax(type: IdentifierTypeSyntax.identifier(stringValue))
     }
 }
